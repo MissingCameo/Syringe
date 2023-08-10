@@ -105,14 +105,19 @@ struct Handle {
 		return std::exchange(this->Value, Traits::default_value());
 	}
 
+#pragma warning(push)
+#pragma warning(disable: 4189)
+
 	void reset(value_type value) noexcept {
-		Handle(this->Value);
+		auto&& _ = Handle(this->Value);
 		this->Value = value;
 	}
 
 	void clear() noexcept {
-		Handle(std::move(*this));
+		auto&& _ = Handle(std::move(*this));
 	}
+
+#pragma warning(pop)
 
 	value_type* set() noexcept {
 		this->clear();
@@ -181,9 +186,14 @@ struct VirtualMemoryHandle {
 		return static_cast<BYTE*>(this->Value);
 	}
 
+#pragma warning(push)
+#pragma warning(disable: 4189)
+
 	void clear() noexcept {
-		VirtualMemoryHandle(std::move(*this));
+		auto&& _ = VirtualMemoryHandle(std::move(*this));
 	}
+
+#pragma warning(pop)
 
 	void swap(VirtualMemoryHandle& other) noexcept {
 		using std::swap;
